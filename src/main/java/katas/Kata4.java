@@ -21,19 +21,13 @@ public class Kata4 {
         List<MovieList> movieLists = DataUtil.getMovieLists();
 
         return  movieLists.stream()
-                .flatMap(movieList -> movieList.getVideos().stream())
-                .flatMap(movie -> movie.getBoxarts().stream()
-                        .flatMap(boxArt -> Stream.of(ImmutableMap.of("id", movie.getId(),
+                .map(movieList -> movieList.getVideos())
+                .flatMap(movies -> movies.stream()
+                        .map(movie -> ImmutableMap.of("id", movie.getId(),
                                 "title", movie.getTitle(),
-                                "boxart", boxArt.getWidth() + "x" + boxArt.getWidth() + " " + boxArt.getUrl()))))
-                .collect(Collectors.toList());
-
-//        return  movieLists.stream()
-//                .flatMap(movieList -> movieList.getVideos().stream())
-//                .flatMap(movie -> movie.getBoxarts().stream()
-//                        .flatMap(boxArt -> Stream.of(ImmutableMap.of("id", movie.getId(),
-//                                "title", movie.getTitle(),
-//                                "boxart", boxArt.getWidth() + "x" + boxArt.getWidth() + " " + boxArt.getUrl()))))
-//                .collect(Collectors.toList());
+                                "boxart", movie.getBoxarts().stream().filter(boxArt ->
+                                        boxArt.getWidth().equals(150) && boxArt.getHeight().equals(200))
+                                        .collect(Collectors.toList()).get(0).getUrl()))).
+                collect(Collectors.toList());
     }
 }
