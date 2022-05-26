@@ -20,7 +20,13 @@ public class Kata7 {
     public static List<Map> execute() {
         List<MovieList> movieLists = DataUtil.getMovieLists();
 
+        return movieLists.stream()
+                .map(movieList -> movieList.getVideos())
+                .flatMap(movies -> movies.stream()
+                        .map(movie -> ImmutableMap.of("id", movie.getId(), "title", movie.getTitle(),
+                                "boxart", movie.getBoxarts().stream().reduce((boxArt, boxArt2) ->
+                                        boxArt.getHeight()*boxArt.getWidth() > boxArt2.getHeight()*boxArt2.getWidth() ?
+                                        boxArt : boxArt2)))).collect(Collectors.toList());
 
-        return ImmutableList.of(ImmutableMap.of("id", 5, "title", "Bad Boys", "boxart", "url"));
     }
 }
