@@ -26,7 +26,8 @@ public class Kata7 {
                         .map(movie -> ImmutableMap.of("id", movie.getId(), "title", movie.getTitle(),
                                 "boxart", movie.getBoxarts().stream().reduce((boxArt, boxArt2) ->
                                         boxArt.getHeight()*boxArt.getWidth() > boxArt2.getHeight()*boxArt2.getWidth() ?
-                                        boxArt : boxArt2)))).collect(Collectors.toList());
+                                        boxArt : boxArt2).get().getUrl())))
+                .collect(Collectors.toList());
 
     }
 }
